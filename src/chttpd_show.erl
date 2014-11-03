@@ -122,7 +122,7 @@ send_doc_update_response(Req, Db, DDoc, UpdateName, Doc, DocId) ->
     UpdateResp = couch_query_servers:ddoc_prompt(DDoc, Cmd, [JsonDoc, JsonReq]),
     JsonResp = case UpdateResp of
         [<<"up">>, {NewJsonDoc}, {JsonResp0}] ->
-            case chttpd:header_value(Req, "X-Couch-Full-Commit", "false") of
+            case chttpd:header_value(Req, "X-CouchDB-Full-Commit", "false") of
             "true" ->
                 Options = [full_commit, {user_ctx, Req#httpd.user_ctx}, {w, W}];
             _ ->
@@ -141,8 +141,8 @@ send_doc_update_response(Req, Db, DDoc, UpdateName, Doc, DocId) ->
             {[
                 {<<"code">>, Code},
                 {<<"headers">>, {[
-                    {<<"X-Couch-Update-NewRev">>, NewRevStr},
-                    {<<"X-Couch-Id">>, NewDoc#doc.id}
+                    {<<"X-CouchDB-Update-NewRev">>, NewRevStr},
+                    {<<"X-CouchDB-Id">>, NewDoc#doc.id}
                 ]}}
                 | JsonResp0]};
         [<<"up">>, _Other, {JsonResp0}] ->

@@ -336,7 +336,7 @@ db_req(#httpd{method='POST',path_parts=[_,<<"_bulk_docs">>], user_ctx=Ctx}=Req, 
     _ ->
         couch_httpd:qs_value(Req, "w", integer_to_list(mem3:quorum(Db)))
     end,
-    case chttpd:header_value(Req, "X-Couch-Full-Commit") of
+    case chttpd:header_value(Req, "X-CouchDB-Full-Commit") of
     "true" ->
         Options = [full_commit, {user_ctx,Ctx}, {w,W}];
     "false" ->
@@ -853,7 +853,7 @@ send_updated_doc(#httpd{user_ctx=Ctx} = Req, Db, DocId, #doc{deleted=Deleted}=Do
         Headers, UpdateType) ->
     W = couch_httpd:qs_value(Req, "w", integer_to_list(mem3:quorum(Db))),
     Options =
-        case couch_httpd:header_value(Req, "X-Couch-Full-Commit") of
+        case couch_httpd:header_value(Req, "X-CouchDB-Full-Commit") of
         "true" ->
             [full_commit, UpdateType, {user_ctx,Ctx}, {w,W}];
         "false" ->

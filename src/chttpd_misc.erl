@@ -260,7 +260,7 @@ handle_config_req(#httpd{method='GET', path_parts=[_,Section]}=Req) ->
 % "value"
 handle_config_req(#httpd{method='PUT', path_parts=[_, Section, Key]}=Req) ->
     Value = chttpd:json_body(Req),
-    Persist = chttpd:header_value(Req, "X-Couch-Persist") /= "false",
+    Persist = chttpd:header_value(Req, "X-CouchDB-Persist") /= "false",
     OldValue = config:get(Section, Key, ""),
     ok = config:set(Section, Key, ?b2l(Value), Persist),
     send_json(Req, 200, list_to_binary(OldValue));
@@ -274,7 +274,7 @@ handle_config_req(#httpd{method='GET', path_parts=[_, Section, Key]}=Req) ->
     end;
 % DELETE /_config/Section/Key
 handle_config_req(#httpd{method='DELETE',path_parts=[_,Section,Key]}=Req) ->
-    Persist = chttpd:header_value(Req, "X-Couch-Persist") /= "false",
+    Persist = chttpd:header_value(Req, "X-CouchDB-Persist") /= "false",
     case config:get(Section, Key, null) of
     null ->
         throw({not_found, unknown_config_value});

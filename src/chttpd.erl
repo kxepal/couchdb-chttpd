@@ -879,7 +879,7 @@ timing() ->
     end.
 
 reqid() ->
-    {"X-Couch-Request-ID", get(nonce)}.
+    {"X-CouchDB-Request-ID", get(nonce)}.
 
 json_stack({bad_request, _, _}) ->
     [];
@@ -927,7 +927,7 @@ log_error_with_stack_trace(_) ->
     ok.
 
 stack_trace_id(Stack) ->
-    {"X-Couch-Stack-Hash", stack_hash(Stack)}.
+    {"X-CouchDB-Stack-Hash", stack_hash(Stack)}.
 
 stack_hash(Stack) ->
     erlang:crc32(term_to_binary(Stack)).
